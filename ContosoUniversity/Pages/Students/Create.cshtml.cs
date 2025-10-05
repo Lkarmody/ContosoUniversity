@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ContosoUniversity.Data;
+using ContosoUniversity.Logging;
+using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ContosoUniversity.Data;
-using ContosoUniversity.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.Pages.Students
 {
@@ -14,23 +15,27 @@ namespace ContosoUniversity.Pages.Students
     {
         private readonly ContosoUniversity.Data.SchoolContext _context;
 
-        public CreateModel(ContosoUniversity.Data.SchoolContext context)
+        private readonly ILogger<CreateModel> _logger;
+
+        public CreateModel(SchoolContext context, ILogger<CreateModel> logger)
         {
             _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
-            return Page();
+            _logger = logger;
         }
 
         [BindProperty]
         public Student Student { get; set; } = default!;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        public IActionResult OnGet()
+        {
+            _logger.LogInformation(LogEvents.CreateStudent, "Succesfully Accessed Create Page");
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             var emptyStudent = new Student();
+
 
             if (await TryUpdateModelAsync<Student>(
                 emptyStudent,

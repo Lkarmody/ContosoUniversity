@@ -24,6 +24,20 @@ namespace ContosoUniversity.Pages.Students
         public async Task OnGetAsync()
         {
             Student = await _context.Students.ToListAsync();
+            Student = await _context.GetStudentsAsync();
+        }
+        public async Task<IActionResult> OnPostAddStudentAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                Student = await _context.GetStudentsAsync();
+
+                return Page();
+            }
+
+            await _context.AddStudentAsync((Student)Student);
+
+            return RedirectToPage();
         }
     }
 }

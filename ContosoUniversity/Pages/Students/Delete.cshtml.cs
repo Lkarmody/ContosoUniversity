@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ContosoUniversity.Data;
+using ContosoUniversity.Logging;
+using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.Data;
-using ContosoUniversity.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.Pages.Students
 {
@@ -30,6 +31,7 @@ namespace ContosoUniversity.Pages.Students
         {
             if (id == null)
             {
+                
                 return NotFound();
             }
 
@@ -54,6 +56,7 @@ namespace ContosoUniversity.Pages.Students
         {
             if (id == null)
             {
+                _logger.LogWarning(LogEvents.DeleteStudent, "Attempted to POST delete with null ID at {Time}", DateTime.Now);
                 return NotFound();
             }
 
@@ -68,15 +71,18 @@ namespace ContosoUniversity.Pages.Students
             {
                 _context.Students.Remove(student);
                 await _context.SaveChangesAsync();
+                _logger.LogCritical(LogEvents.DeleteStudent, "Deleted student with ID {ID} at {Time}", id, DateTime.Now);
+
+
                 return RedirectToPage("./Index");
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError(ex, ErrorMessage);
+                _logger.LogError(LogEvents.DeleteStudent, "Student with ID {ID} not found for deletion at {Time}", id, DateTime.Now);
+            }
 
-                return RedirectToAction("./Delete",
+            return RedirectToAction("./Delete",
                                      new { id, saveChangesError = true });
             }
         }
     }
-}
