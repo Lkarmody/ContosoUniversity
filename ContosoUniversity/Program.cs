@@ -4,6 +4,7 @@ using ContosoUniversity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHealthChecks();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -56,6 +57,8 @@ app.MapRazorPages()
    .WithStaticAssets();
 
 app.Logger.LogInformation("Starting application...");
+
+app.MapHealthChecks("/healthz");
 
 app.Run();
 

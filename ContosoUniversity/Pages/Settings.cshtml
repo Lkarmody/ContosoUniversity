@@ -1,0 +1,10 @@
+﻿@page
+@model ContosoUniversity.Pages.SettingsModel
+@{
+	ViewData["Title"] = "App Settings Info";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p><strong>Default Log Level:</strong> @Model.DefaultLogLevel</p>
+<p><strong>Environment Message:</strong> @Model.EnvironmentMessage</p>
