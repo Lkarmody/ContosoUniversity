@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ContosoUniversity.Data;
+using Microsoft.AspNetCore.Identity;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,12 @@ builder.Services.AddHealthChecks();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<SchoolContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
+
+builder.Services.AddDbContext<ContosoUniversityContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ContosoUniversityContextConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ContosoUniversityContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -44,6 +51,9 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<SchoolContext>();
     context.Database.EnsureCreated();
     DbInitializer.Initialize(context);
+
+    var transactionManager = new TransactionManager(context);
+    await transactionManager.HandleMultiEntityTransactionAsync();
 }
 
 app.UseHttpsRedirection();

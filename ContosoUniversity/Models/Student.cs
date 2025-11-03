@@ -1,4 +1,6 @@
-﻿namespace ContosoUniversity.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ContosoUniversity.Models
 {
     public class Student
     {
@@ -8,5 +10,9 @@
         public DateTime EnrollmentDate { get; set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
+
+        [Timestamp]
+        public byte[] Version { get; set; }
+
     }
 }

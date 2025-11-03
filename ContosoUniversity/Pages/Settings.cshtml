@@ -8,3 +8,19 @@
 
 <p><strong>Default Log Level:</strong> @Model.DefaultLogLevel</p>
 <p><strong>Environment Message:</strong> @Model.EnvironmentMessage</p>
+<p>@Model.ConcurrencyMessage</p>
+
+<h3>Stored Procedure Result:</h3>
+
+@if (!string.IsNullOrEmpty(Model.StoredProcFirstName))
+{
+	<p><strong>Student First Name:</strong> @Model.StoredProcFirstName</p>
+	<p><strong>Student Last Name:</strong> @Model.StoredProcLastName</p>
+	<p><strong>Enrollment Date:</strong> @Model.StoredProcEnrollmentDate</p>
+}
+else
+{
+	<p><em>No student information returned from stored procedure.</em></p>
+}
+	<hr />
+	<p><em>Data retrieved using stored procedure: DisplayStudentFromLastName</em></p>
