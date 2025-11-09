@@ -10,6 +10,8 @@ builder.Services.AddHealthChecks();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddResponseCaching();
 builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
 
@@ -44,6 +46,8 @@ else
     app.UseMigrationsEndPoint();
 }
 
+
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -61,6 +65,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseResponseCaching();
 
 app.MapStaticAssets();
 app.MapRazorPages()

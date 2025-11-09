@@ -1,0 +1,15 @@
+﻿@page
+@model ContosoUniversity.Pages.ClockPageModel
+@{
+    ViewData["Title"] = "Clock Page";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p><strong>Current Time:</strong> @Model.CurrentDateTime</p>
+<p><strong>Cached Time:</strong> @Model.CacheCurrentDateTime</p>
+
+<p>
+    Refresh the page repeatedly —
+    the cached time should only update every 3 seconds (while current time updates each refresh).
+</p>
