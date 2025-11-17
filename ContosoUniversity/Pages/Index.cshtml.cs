@@ -14,7 +14,10 @@ namespace ContosoUniversity.Pages
 
         public void OnGet()
         {
-
+            _logger.LogInformation(
+            "Accessed {Page} at {Time}",
+            "Home/Index",
+            DateTime.Now);
         }
     }
 }

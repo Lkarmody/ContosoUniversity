@@ -15,8 +15,23 @@ builder.Services.AddResponseCaching();
 builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
 
+
+//HealthCheck for the database context
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<SchoolContext>("SchoolContext_DBContextCheck")
+    .AddSqlServer(
+        builder.Configuration.GetConnectionString("SchoolContext"),
+        name: "SchoolContext_SQLServerCheck"
+    );
+
+//Telemetry
+builder.Services.AddApplicationInsightsTelemetry();
+
+
 builder.Services.AddDbContext<ContosoUniversityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ContosoUniversityContextConnection")));
+
+
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ContosoUniversityContext>();
 

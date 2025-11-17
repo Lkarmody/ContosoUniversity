@@ -15,8 +15,17 @@ namespace ContosoUniversity.Pages
 {
     public class SettingsModel : PageModel
     {
-        private readonly IConfiguration _configuration;
         private readonly SchoolContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<SettingsModel> _logger;
+
+        public SettingsModel(SchoolContext context, IConfiguration configuration, ILogger<SettingsModel> logger)
+        {
+            _context = context;
+            _configuration = configuration;
+            _logger = logger;
+        }
+
 
         public string? DefaultLogLevel { get; set; }
         public string? EnvironmentMessage { get; set; }
@@ -25,15 +34,14 @@ namespace ContosoUniversity.Pages
         public string? StoredProcFirstName { get; set; }
         public string? StoredProcLastName { get; set; }
         public string? StoredProcEnrollmentDate { get; set; }
-        public SettingsModel(IConfiguration configuration, SchoolContext context)
-        {
-            _configuration = configuration;
-            _context = context;
-        }
-
-
+       
         public async Task OnGetAsync()
         {
+            _logger.LogInformation(
+            "Accessed {Page} at {Time} starting settings operations",
+            "Settings Page",
+            DateTime.Now);
+
             DefaultLogLevel = _configuration["Logging:LogLevel:Default"];
             EnvironmentMessage = _configuration["CustomSettings:EnvironmentMessage"];
 
