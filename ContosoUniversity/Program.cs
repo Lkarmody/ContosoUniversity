@@ -45,21 +45,28 @@ builder.Services.AddLogging(logging =>
     builder.Logging.AddDebug();
 });
 
+builder.Services.AddDbContext<InstructorContext>(options =>
+    options.UseInMemoryDatabase("InstructorDB"));
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
- 
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
-    app.UseDeveloperExceptionPage();
-    app.UseMigrationsEndPoint();
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
 }
+
+InstructorEndpoints.Map(app);
 
 
 

@@ -4,6 +4,21 @@
     ViewData["Title"] = "Home page";
 }
 
+<button onclick="loadInstructors()">Load Instructors from API</button>
+
+<div id="result" style="white-space: pre-wrap; margin-top: 20px;">
+   
+</div>
+
+<script>
+    async function loadInstructors() {
+        const response = await fetch('/Instructors');  
+        const data = await response.json();            
+        document.getElementById("result").innerText = JSON.stringify(data, null, 2);  
+    }
+</script>
+
+
 <div class="row mb-auto">
     <div class="col-md-4">
         <div class="row no-gutters border mb-4">

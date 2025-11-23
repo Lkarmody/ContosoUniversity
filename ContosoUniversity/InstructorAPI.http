@@ -1,0 +1,32 @@
+﻿### GET ALL INSTRUCTORS
+GET https://localhost:7209/Instructors
+Accept: application/json
+
+### GET ALL RETIRED INSTRUCTORS
+GET https://localhost:7209/Instructors/Retired
+Accept: application/json
+
+### GET INSTRUCTOR BY ID
+GET https://localhost:7209/Instructors/1
+Accept: application/json
+
+### ADD NEW INSTRUCTOR
+POST https://localhost:7209/Instructors
+Content-Type: application/json
+
+{
+  "name": "John Smith",
+  "isRetired": false
+}
+
+### UPDATE EXISTING INSTRUCTOR
+PUT https://localhost:7209/Instructors/1
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "isRetired": true
+}
+
+### DELETE INSTRUCTOR
+DELETE https://localhost:7209/Instructors/1
